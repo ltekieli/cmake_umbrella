@@ -16,4 +16,6 @@ add_subdirectory(lib/logging)
 add_subdirectory(lib/rpc)
 add_subdirectory(lib/abstract)
 
+add_subdirectory(apps/worker)
+
 include(CTest)
