@@ -8,16 +8,26 @@ target_link_libraries(rpc
     PRIVATE
         umbrella::logging
 )
+set_target_properties(rpc PROPERTIES
+    SOVERSION "${umbrella_rpc_VERSION_MAJOR}"
+    VERSION "${umbrella_rpc_VERSION}"
+)
 
 add_library(umbrella::rpc ALIAS rpc)
+
+include(GNUInstallDirs)
 
 install(
     TARGETS
         rpc
-    DESTINATION
-        lib
     EXPORT
         umbrella_rpcTargets
+    RUNTIME DESTINATION
+        ${CMAKE_INSTALL_BINDIR}
+    LIBRARY DESTINATION
+        ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION
+        ${CMAKE_INSTALL_LIBDIR}
 )
 
 install(
@@ -28,33 +38,33 @@ install(
     FILE
         umbrella_rpcTargets.cmake
     DESTINATION
-        lib/cmake/umbrella_rpc
+        ${CMAKE_INSTALL_LIBDIR}/cmake/umbrella_rpc
 )
 
 install(
     FILES
         ${PROJECT_SOURCE_DIR}/include/umbrella/rpc/rpc.h
     DESTINATION
-        include/umbrella/rpc
+        ${CMAKE_INSTALL_INCLUDEDIR}/umbrella/rpc
 )
 
 include(CMakePackageConfigHelpers)
 
 configure_package_config_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/Config.cmake.in
-    "${CMAKE_CURRENT_BINARY_DIR}/umbrella_rpcConfig.cmake"
+    ${CMAKE_CURRENT_BINARY_DIR}/umbrella_rpcConfig.cmake
     INSTALL_DESTINATION
-        "lib/cmake/umbrella_rpc"
+        ${CMAKE_INSTALL_LIBDIR}/cmake/umbrella_rpc
     NO_SET_AND_CHECK_MACRO
     NO_CHECK_REQUIRED_COMPONENTS_MACRO
 )
 
 write_basic_package_version_file(
-    "${CMAKE_CURRENT_BINARY_DIR}/umbrella_rpcConfigVersion.cmake"
+    ${CMAKE_CURRENT_BINARY_DIR}/umbrella_rpcConfigVersion.cmake
     VERSION
         "${umbrella_rpc_VERSION_MAJOR}.${umbrella_rpc_VERSION_MINOR}"
     COMPATIBILITY
-        AnyNewerVersion
+        SameMajorVersion
 )
 
 # install the configuration file
@@ -63,5 +73,5 @@ install(
         ${CMAKE_CURRENT_BINARY_DIR}/umbrella_rpcConfig.cmake
         ${CMAKE_CURRENT_BINARY_DIR}/umbrella_rpcConfigVersion.cmake
     DESTINATION
-        lib/cmake/umbrella_rpc
+        ${CMAKE_INSTALL_LIBDIR}/cmake/umbrella_rpc
 )

@@ -6,7 +6,7 @@ set(as_subproject
     umbrella_abstract umbrella_logging umbrella_rpc)
 
 macro(find_package)
-    if (NOT "${ARGV0}" IN_LIST as_subproject)
+    if(NOT "${ARGV0}" IN_LIST as_subproject)
         _find_package(${ARGV})
     endif()
 endmacro()
