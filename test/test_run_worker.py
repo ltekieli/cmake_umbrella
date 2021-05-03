@@ -2,7 +2,7 @@ import logging
 import os
 import time
 import pytest
-from .process import BubblewrapSandbox
+from bintest.sandbox import BubblewrapSandbox
 
 
 logger = logging.getLogger(__name__)
