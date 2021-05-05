@@ -13,6 +13,7 @@ class Process:
         self._fds = fds
         self._process = None
         self._logger = None
+        self._logger_error = None
 
     def start(self):
         logger.debug(f"Starting process {self._command}")
@@ -20,7 +21,7 @@ class Process:
                                      bufsize=0,
                                      universal_newlines=True,
                                      stdout=subprocess.PIPE,
-                                     stderr=subprocess.STDOUT,
+                                     stderr=subprocess.PIPE,
                                      close_fds=True,
                                      pass_fds=self._fds)
         logger.debug(f"Process started PID:{self._process.pid}")

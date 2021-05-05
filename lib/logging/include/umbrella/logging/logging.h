@@ -1,23 +1,16 @@
 #ifndef UMBRELLA_LOGGING_H_
 #define UMBRELLA_LOGGING_H_
 
-#include <iostream>
 #include <string>
 
 namespace umbrella {
 namespace logging {
 
-inline void info(const std::string& msg) {
-    std::cout << msg << '\n';
-}
+void info(const std::string& msg);
 
-inline void warning(const std::string& msg) {
-    std::cout << msg << '\n';
-}
+void warning(const std::string& msg);
 
-inline void error(const std::string& msg) {
-    std::cout << msg << '\n';
-}
+void error(const std::string& msg);
 
 }  // namespace logging
 }  // namespace umbrella

@@ -5,11 +5,13 @@ project(umbrella_abstract VERSION 0.1)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-find_package(umbrella_logging REQUIRED)
-find_package(umbrella_rpc REQUIRED)
+if(NOT TARGET umbrella::logging)
+    find_package(umbrella_logging REQUIRED)
+endif()
 
-set(CMAKE_INSTALL_RPATH "$ORIGIN/../lib")
-set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+if(NOT TARGET umbrella::rpc)
+    find_package(umbrella_rpc REQUIRED)
+endif()
 
 add_subdirectory(src)
 

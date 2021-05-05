@@ -21,7 +21,9 @@ def worker(install_prefix, tmp_path):
 
     with BubblewrapSandbox(worker_exe,
                            sysroot=sysroot,
-                           ro_mountpoints={install_prefix: install_prefix},
+                           ro_mountpoints={
+                               install_prefix: install_prefix,
+                           },
                            rw_mountpoints={tmp: '/tmp'}) as worker:
         yield worker
     assert worker.rc == 0

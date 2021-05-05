@@ -1,14 +1,22 @@
-add_library(logging INTERFACE)
+add_library(logging logging.cpp)
+target_sources(logging
+    PRIVATE
+        logging.cpp
+    PUBLIC
+        $<BUILD_INTERFACE:
+            ${PROJECT_SOURCE_DIR}/include/umbrella/logging/logging.h>
+        $<INSTALL_INTERFACE:
+            include/umbrella/logging/logging.h>
+)
 target_include_directories(logging
-    INTERFACE
+    PUBLIC
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include>
 )
-
-add_library(logging_library logging.cpp)
-target_include_directories(logging_library
-    PRIVATE
-        ${PROJECT_SOURCE_DIR}/include)
+target_link_libraries(logging
+    PUBLIC
+        spdlog::spdlog
+)
 
 add_library(umbrella::logging ALIAS logging)
 

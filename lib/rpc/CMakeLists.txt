@@ -5,7 +5,9 @@ project(umbrella_rpc VERSION 0.1)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-find_package(umbrella_logging REQUIRED)
+if(NOT TARGET umbrella::logging)
+    find_package(umbrella_logging REQUIRED)
+endif()
 
 add_subdirectory(src)
 
