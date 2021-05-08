@@ -5,7 +5,7 @@ target_include_directories(abstract
         $<INSTALL_INTERFACE:include>
 )
 target_link_libraries(abstract
-    PRIVATE
+    PUBLIC
         umbrella::logging
         umbrella::rpc
 )

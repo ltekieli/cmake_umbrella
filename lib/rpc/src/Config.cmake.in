@@ -1,4 +1,6 @@
 @PACKAGE_INIT@
 
+find_package(umbrella_logging)
+
 include ( "${CMAKE_CURRENT_LIST_DIR}/umbrella_rpcTargets.cmake" )
 

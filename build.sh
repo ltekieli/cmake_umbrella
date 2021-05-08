@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-INSTALL_PREFIX=/tmp/umbrella
+INSTALL_PREFIX=${SDKTARGETSYSROOT:-}/tmp/umbrella
 CMAKE_FLAGS=" \
     -DBUILD_SHARED_LIBS=ON \
     -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
@@ -12,13 +12,35 @@ CMAKE_FLAGS=" \
     -DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
 JOBS=$(nproc)
 
+function issdk() {
+    if [ -z "${SDKTARGETSYSROOT:-}" ]; then
+        return 1
+    fi
+    return 0
+}
+
+if issdk; then
+    QEMU="qemu-${ARCH}"
+
+    if [ "${ARCH}" == "arm64" ]; then
+        QEMU="qemu-aarch64"
+    fi
+
+    CMAKE_FLAGS="\
+        ${CMAKE_FLAGS}\
+        -DCMAKE_CROSSCOMPILING_EMULATOR=${QEMU};-L;${SDKTARGETSYSROOT}
+    "
+fi
+
 function deps() {
     rm -rf build-conan
-    mkdir build-conan
-    pushd build-conan
-    conan install ../
-    conan imports ../ -imf ${INSTALL_PREFIX}
-    popd
+    if ! issdk; then
+        mkdir build-conan
+        pushd build-conan
+        conan install ../
+        conan imports ../ -imf "${INSTALL_PREFIX}"
+        popd
+    fi
 }
 
 function single_library() {
@@ -72,15 +94,22 @@ function test_units() {
 }
 
 function test_components() {
+    if issdk; then
+        echo "Component tests not supported when cross compiling"
+        exit 1
+    fi
     build_together
     tox -- --install-prefix="${INSTALL_PREFIX}" -s
 }
 
 function build_all() {
+    clean
     build_separate
     build_together
     test_units
-    test_components
+    if ! issdk; then
+        test_components
+    fi
 }
 
 function clean() {

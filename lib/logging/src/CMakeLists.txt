@@ -1,12 +1,7 @@
-add_library(logging logging.cpp)
+add_library(logging)
 target_sources(logging
     PRIVATE
         logging.cpp
-    PUBLIC
-        $<BUILD_INTERFACE:
-            ${PROJECT_SOURCE_DIR}/include/umbrella/logging/logging.h>
-        $<INSTALL_INTERFACE:
-            include/umbrella/logging/logging.h>
 )
 target_include_directories(logging
     PUBLIC
