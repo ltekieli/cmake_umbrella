@@ -3,6 +3,8 @@ target_link_libraries(worker
     PRIVATE
         umbrella::abstract
         umbrella::logging
+        umbrella::cnp
+        umbrella::pb
 )
 
 install(

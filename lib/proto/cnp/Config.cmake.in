@@ -1,0 +1,6 @@
+@PACKAGE_INIT@
+
+find_package(CapnProto REQUIRED)
+
+include ( "${CMAKE_CURRENT_LIST_DIR}/umbrella_cnpTargets.cmake" )
+

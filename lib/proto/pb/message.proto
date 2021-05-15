@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+option optimize_for = LITE_RUNTIME;
+
+package example;
+
+message Message {
+    repeated int32 id = 1;
+}

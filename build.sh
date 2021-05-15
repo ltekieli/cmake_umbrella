@@ -3,13 +3,39 @@
 set -euo pipefail
 
 INSTALL_PREFIX=${SDKTARGETSYSROOT:-}/tmp/umbrella
-CMAKE_FLAGS=" \
+
+export CXXFLAGS="\
+    -Werror \
+    -Wall \
+    -Wextra \
+    -Wshadow \
+    -Wnon-virtual-dtor \
+    -Wold-style-cast \
+    -Wcast-align \
+    -Wunused \
+    -Woverloaded-virtual \
+    -Wpedantic \
+    -Wconversion \
+    -Wsign-conversion \
+    -Wnull-dereference \
+    -Wdouble-promotion \
+    -Wformat=2 \
+    -Wmisleading-indentation \
+    -Wduplicated-cond \
+    -Wduplicated-branches \
+    -Wlogical-op \
+    -Wuseless-cast \
+"
+
+CMAKE_FLAGS="\
     -DBUILD_SHARED_LIBS=ON \
     -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
     -DCMAKE_PREFIX_PATH="${INSTALL_PREFIX}\;${PWD}/build-conan" \
     -DCMAKE_MODULE_PATH=${PWD}/build-conan \
     -DCMAKE_INSTALL_RPATH=\$ORIGIN/../lib \
-    -DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
+    -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+"
+
 JOBS=$(nproc)
 
 function issdk() {
@@ -40,15 +66,17 @@ function deps() {
         conan install ../
         conan imports ../ -imf "${INSTALL_PREFIX}"
         popd
+        export LD_LIBRARY_PATH=${PWD}/build-conan/lib
     fi
 }
 
 function single_library() {
     local target="$1"
+    local directory="${2:-${target}}"
     rm -rf "build-${target}" && mkdir "build-${target}"
     pushd "build-${target}"
     # shellcheck disable=SC2086
-    cmake ../lib/"${target}" ${CMAKE_FLAGS}
+    cmake ../lib/"${directory}" ${CMAKE_FLAGS}
     cmake --build . --target all --parallel "${JOBS}"
     cmake --install . --prefix "${INSTALL_PREFIX}"
     popd
@@ -71,6 +99,8 @@ function build_separate() {
     single_library logging
     single_library rpc
     single_library abstract
+    single_library cnp proto/cnp
+    single_library pb proto/pb
     single_app worker
 }
 

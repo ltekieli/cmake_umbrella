@@ -9,7 +9,7 @@ target_include_directories(logging
         $<INSTALL_INTERFACE:include>
 )
 target_link_libraries(logging
-    PUBLIC
+    PRIVATE
         spdlog::spdlog
 )
 

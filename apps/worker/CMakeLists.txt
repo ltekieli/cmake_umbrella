@@ -13,4 +13,12 @@ if(NOT TARGET umbrella::logging)
     find_package(umbrella_logging REQUIRED)
 endif()
 
+if(NOT TARGET umbrella::cnp)
+    find_package(umbrella_cnp REQUIRED)
+endif()
+
+if(NOT TARGET umbrella::pb)
+    find_package(umbrella_pb REQUIRED)
+endif()
+
 add_subdirectory(src)

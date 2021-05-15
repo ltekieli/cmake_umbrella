@@ -7,6 +7,9 @@ add_subdirectory(lib/logging)
 add_subdirectory(lib/rpc)
 add_subdirectory(lib/abstract)
 
+add_subdirectory(lib/proto/cnp)
+add_subdirectory(lib/proto/pb)
+
 add_subdirectory(apps/worker)
 
 include(CTest)
