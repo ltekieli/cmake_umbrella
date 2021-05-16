@@ -21,7 +21,10 @@ target_include_directories(cnp
         $<INSTALL_INTERFACE:include>
 )
 target_link_libraries(cnp PUBLIC CapnProto::capnp)
-
+set_target_properties(cnp PROPERTIES
+    SOVERSION "${umbrella_cnp_VERSION_MAJOR}"
+    VERSION "${umbrella_cnp_VERSION}"
+)
 
 add_library(umbrella::cnp ALIAS cnp)
 

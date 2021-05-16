@@ -12,6 +12,10 @@ target_link_libraries(logging
     PRIVATE
         spdlog::spdlog
 )
+set_target_properties(logging PROPERTIES
+    SOVERSION "${umbrella_logging_VERSION_MAJOR}"
+    VERSION "${umbrella_logging_VERSION}"
+)
 
 add_library(umbrella::logging ALIAS logging)
 

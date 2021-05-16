@@ -27,6 +27,10 @@ target_compile_options(pb
     PRIVATE
         -Wno-conversion
 )
+set_target_properties(pb PROPERTIES
+    SOVERSION "${umbrella_pb_VERSION_MAJOR}"
+    VERSION "${umbrella_pb_VERSION}"
+)
 
 add_library(umbrella::pb ALIAS pb)
 
