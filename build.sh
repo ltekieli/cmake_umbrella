@@ -4,31 +4,32 @@ set -euo pipefail
 
 INSTALL_PREFIX=${SDKTARGETSYSROOT:-}/tmp/umbrella
 
-export CXXFLAGS="\
-    -Werror \
-    -Wall \
-    -Wextra \
-    -Wshadow \
-    -Wnon-virtual-dtor \
-    -Wold-style-cast \
-    -Wcast-align \
-    -Wunused \
-    -Woverloaded-virtual \
-    -Wpedantic \
-    -Wconversion \
-    -Wsign-conversion \
-    -Wnull-dereference \
-    -Wdouble-promotion \
-    -Wformat=2 \
-    -Wmisleading-indentation \
-    -Wduplicated-cond \
-    -Wduplicated-branches \
-    -Wlogical-op \
-    -Wuseless-cast \
-"
+#export CXXFLAGS="\
+#    -Werror \
+#    -Wall \
+#    -Wextra \
+#    -Wshadow \
+#    -Wnon-virtual-dtor \
+#    -Wold-style-cast \
+#    -Wcast-align \
+#    -Wunused \
+#    -Woverloaded-virtual \
+#    -Wpedantic \
+#    -Wconversion \
+#    -Wsign-conversion \
+#    -Wnull-dereference \
+#    -Wdouble-promotion \
+#    -Wformat=2 \
+#    -Wmisleading-indentation \
+#    -Wduplicated-cond \
+#    -Wduplicated-branches \
+#    -Wlogical-op \
+#    -Wuseless-cast \
+#"
 
 CMAKE_FLAGS="\
-    -DBUILD_SHARED_LIBS=ON \
+    -DBUILD_SHARED_LIBS=OFF \
+    -DCMAKE_POSITION_INDEPENDENT_CODE=ON
     -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
     -DCMAKE_PREFIX_PATH="${INSTALL_PREFIX}\;${PWD}/build-conan" \
     -DCMAKE_MODULE_PATH=${PWD}/build-conan \
@@ -101,6 +102,7 @@ function build_separate() {
     single_library abstract
     single_library cnp proto/cnp
     single_library pb proto/pb
+    single_library full full
     single_app worker
 }
 
@@ -162,7 +164,7 @@ function help() {
 }
 
 case ${1:-help} in
-    build_all|build_separate|build_together|clean)
+    build_all|build_separate|build_together|deps|clean)
         $1
         ;;
     test_units|test_components)

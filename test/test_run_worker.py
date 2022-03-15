@@ -28,7 +28,32 @@ def worker(install_prefix, tmp_path):
         yield worker
     assert worker.rc == 0
 
+@pytest.fixture
+def just_ls(tmp_path):
+    logger.info(f"Temp path is: {tmp_path}")
+
+    worker_exe = "/bin/bash -c \"ls -al\""
+    sysroot = tmp_path / 'sysroot'
+    tmp = tmp_path / 'tmp'
+
+    os.mkdir(sysroot)
+    os.mkdir(tmp)
+
+    with BubblewrapSandbox(worker_exe,
+                           sysroot=sysroot,
+                           ro_mountpoints={
+                               "/usr/bin": "/usr/bin",
+                           },
+                           rw_mountpoints={tmp: '/tmp'}) as worker:
+        yield worker
+    #assert worker.rc == 0
+
 
 def test_run_worker(worker):
     logger.debug(f"Sandbox PID: {worker.ppid}")
     logger.debug(f"Process PID: {worker.pid}")
+
+
+def test_run_ls(just_ls):
+    logger.debug(f"Sandbox PID: {just_ls.ppid}")
+    logger.debug(f"Process PID: {just_ls.pid}")

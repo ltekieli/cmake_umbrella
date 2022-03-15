@@ -27,6 +27,7 @@ class BubblewrapSandbox:
             "bwrap",
             "--die-with-parent",
             "--unshare-all",
+            "--share-net",
             "--as-pid-1",
             "--info-fd", str(w),
         ]

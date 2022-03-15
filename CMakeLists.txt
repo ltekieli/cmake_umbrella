@@ -10,6 +10,8 @@ add_subdirectory(lib/abstract)
 add_subdirectory(lib/proto/cnp)
 add_subdirectory(lib/proto/pb)
 
+add_subdirectory(lib/full)
+
 add_subdirectory(apps/worker)
 
 include(CTest)

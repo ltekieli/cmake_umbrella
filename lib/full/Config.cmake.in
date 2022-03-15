@@ -1,0 +1,10 @@
+@PACKAGE_INIT@
+
+find_package(umbrella_abstract REQUIRED)
+find_package(umbrella_logging REQUIRED)
+find_package(umbrella_rpc REQUIRED)
+find_package(umbrella_cnp REQUIRED)
+find_package(umbrella_pb REQUIRED)
+
+include ( "${CMAKE_CURRENT_LIST_DIR}/umbrella_fullTargets.cmake" )
+

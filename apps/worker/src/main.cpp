@@ -6,6 +6,9 @@
 
 #include <capnp/message.h>
 
+#include <chrono>
+#include <thread>
+
 int main() {
     example::Message m;
     m.add_id(10);
@@ -20,9 +23,13 @@ int main() {
 
     umbrella::logging::info(r.toString().flatten().cStr());
 
-    umbrella::logging::info("starting worker");
-    umbrella::abstract::do_something();
-    umbrella::logging::error("something bad?");
-    umbrella::logging::info("stopping worker");
+    while(true) {
+        umbrella::logging::info("starting worker");
+        umbrella::abstract::do_something();
+        umbrella::logging::error("something bad?");
+        umbrella::logging::info("stopping worker");
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+    }
+
     return 0;
 }
